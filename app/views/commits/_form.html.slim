@@ -1,0 +1,6 @@
+= form_tag commits_path, method: :get
+  .input-group
+    = text_field_tag "keyword", params[:keyword], class: "form-control", placeholder: "Search commit messages"
+    span.input-group-btn
+      = button_tag "Search", class: "btn btn-default" do
+        span.glyphicon.glyphicon-search

@@ -1,57 +1,19 @@
 .row
   .col-sm-8
     .search-box
-      form action="#"
-        .input-group
-          input.form-control type="text" placeholder="Search commit messages"
-          span.input-group-btn
-            button.btn.btn-default type="button"
-              span.glyphicon.glyphicon-search
-    .well.well-sm
-      | "Fix bug" - 10,000 results
+      = render "form"
+    .result-info.alert.alert-info
+      = %("#{params[:keyword]}" - #{pluralize(@commits.count, "result")})
     .commits
+      - @commits.each do |commit|
+        .commit.panel.panel-default
+          .panel-body= commit["message"]
+          .panel-footer= commit["repository_id"]
       .commit.panel.panel-default
         .panel-body
           | Lorem 
           span.text-primary perspiciatis
           |  repellat neque veritatis repellendus. Molestiae atque aspernatur aliquid quaerat magnam, numquam dolorum maiores optio eum animi ipsum inventore deleniti neque quod quo neque sunt dolorum quae. Est perferendis.
-        .panel-footer
-          | twbs/bootstrap
-      .commit.panel.panel-default
-        .panel-body
-          | Lorem perspiciatis repellat neque veritatis repellendus. Molestiae atque 
-          span.text-primary aspernatur
-          |  aliquid quaerat magnam, numquam dolorum maiores optio eum animi ipsum inventore deleniti neque quod quo neque sunt dolorum quae. Est perferendis.
-        .panel-footer
-          | twbs/bootstrap
-      .commit.panel.panel-default
-        .panel-body
-          | Lorem perspiciatis repellat neque veritatis repellendus. Molestiae atque aspernatur aliquid quaerat magnam, numquam dolorum maiores optio eum animi ipsum inventore deleniti neque quod quo neque sunt dolorum quae. Est perferendis.
-        .panel-footer
-          | twbs/bootstrap
-      .commit.panel.panel-default
-        .panel-body
-          | Lorem perspiciatis repellat neque veritatis repellendus. Molestiae atque aspernatur aliquid quaerat magnam, numquam dolorum maiores optio eum animi ipsum inventore deleniti neque quod quo neque sunt dolorum quae. Est perferendis.
-        .panel-footer
-          | twbs/bootstrap
-      .commit.panel.panel-default
-        .panel-body
-          | Lorem perspiciatis repellat neque veritatis repellendus. Molestiae atque aspernatur aliquid quaerat magnam, numquam dolorum maiores optio eum animi ipsum inventore deleniti neque quod quo neque sunt dolorum quae. Est perferendis.
-        .panel-footer
-          | twbs/bootstrap
-      .commit.panel.panel-default
-        .panel-body
-          | Lorem perspiciatis repellat neque veritatis repellendus. Molestiae atque aspernatur aliquid quaerat magnam, numquam dolorum maiores optio eum animi ipsum inventore deleniti neque quod quo neque sunt dolorum quae. Est perferendis.
-        .panel-footer
-          | twbs/bootstrap
-      .commit.panel.panel-default
-        .panel-body
-          | Lorem perspiciatis repellat neque veritatis repellendus. Molestiae atque aspernatur aliquid quaerat magnam, numquam dolorum maiores optio eum animi ipsum inventore deleniti neque quod quo neque sunt dolorum quae. Est perferendis.
-        .panel-footer
-          | twbs/bootstrap
-      .commit.panel.panel-default
-        .panel-body
-          | Lorem perspiciatis repellat neque veritatis repellendus. Molestiae atque aspernatur aliquid quaerat magnam, numquam dolorum maiores optio eum animi ipsum inventore deleniti neque quod quo neque sunt dolorum quae. Est perferendis.
         .panel-footer
           | twbs/bootstrap
   .col-sm-4
