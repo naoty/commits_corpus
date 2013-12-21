@@ -1,0 +1,13 @@
+doctype html
+html
+  head
+    meta name="charset" content="utf-8"
+    meta name="viewport" content="width=device-width, initial-scale=1.0"
+    title Commits Corpus
+    = stylesheet_link_tag "application", media: "all",
+                                         "data-turbolinks-track" => true
+    = javascript_include_tag "application", "data-turbolinks-track" => true
+    = csrf_meta_tags
+  body class=stylesheet_namespace
+    .container
+      = yield
