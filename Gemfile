@@ -11,6 +11,7 @@ gem "turbolinks"
 gem "jbuilder", "~> 1.2"
 gem "bootstrap-sass-rails", "~> 3.0.3.0"
 gem "elasticsearch", "~> 0.4.3"
+gem "octokit", "~> 2.0"
 
 group :doc do
   gem "sdoc", require: false
