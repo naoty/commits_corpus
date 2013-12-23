@@ -11,7 +11,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131222095304) do
+ActiveRecord::Schema.define(version: 20131222124105) do
+
+  create_table "commits", force: true do |t|
+    t.string   "sha"
+    t.string   "message"
+    t.string   "index_id"
+    t.integer  "repository_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "commits", ["repository_id"], name: "index_commits_on_repository_id", using: :btree
 
   create_table "repositories", force: true do |t|
     t.integer  "uid"
