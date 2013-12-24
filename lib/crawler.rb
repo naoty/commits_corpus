@@ -9,6 +9,11 @@ class Crawler
     resource.nil? ? [] : resource.items
   end
 
+  def crawl_commits(repository_name, sha)
+    puts "Crawling commits until: #{sha}"
+    commits = @client.commits(repository_name, sha)
+  end
+
   private
 
   def access_token

@@ -20,4 +20,26 @@ namespace :crawler do
       page += 1
     end
   end
+
+  desc "Crawl commits of crawled repositories"
+  task :commits => :environment do
+    crawler = Crawler.new
+    repositories = Repository.all
+    repositories.each do |repository|
+      sha = nil
+      while commits = crawler.crawl_commits(repository.full_name, sha)
+        break if commits.empty?
+        commits.each do |commit|
+          attrs = {}
+          attrs[:sha] = commit[:sha]
+          attrs[:message] = commit[:commit][:message]
+          attrs[:repository_id] = repository.id
+          Commit.create(attrs) rescue next
+        end
+        last_commit_sha = commits.last.sha
+        break if sha == last_commit_sha
+        sha = last_commit_sha
+      end
+    end
+  end
 end
