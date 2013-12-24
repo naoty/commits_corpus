@@ -4,26 +4,27 @@ class Commit < ActiveRecord::Base
   before_save   :create_index
   after_destroy :delete_index
 
-  private
+  INDEX = Rails.env.test? ? "test_commits" : "commits"
 
-  def client
-    @client ||= Elasticsearch::Client.new
+  def self.search(keyword)
+    client = Elasticsearch::Client.new
+    results = client.search(index: INDEX, type: "commit", q: keyword)
+    total = results["hits"]["total"]
+    commits = results["hits"]["hits"].map { |hit| Commit.new(hit["_source"]) }
+    [commits, total]
   end
 
+  private
+
   def create_index
-    query = {}
-    query[:index] = Rails.env.test? ? "test_commits" : "commits"
-    query[:type]  = "commit"
-    query[:body]  = self.to_json(only: [:sha, :message])
-    result = client.index(query)
+    client = Elasticsearch::Client.new
+    body = self.to_json(only: [:sha, :message, :repository_id])
+    result = client.index(index: INDEX, type: "commit", body: body)
     self.index_id = result["_id"]
   end
 
   def delete_index
-    query = {}
-    query[:index] = Rails.env.test? ? "test_commits" : "commits"
-    query[:type]  = "commit"
-    query[:id]    = index_id
-    client.delete(query)
+    client = Elasticsearch::Client.new
+    client.delete(index: INDEX, type: "commit", id: index_id)
   end
 end

@@ -3,12 +3,12 @@
     .search-box
       = render "form"
     .result-info.alert.alert-info
-      = %("#{params[:keyword]}" - #{pluralize(@commits.count, "result")})
+      = %("#{params[:keyword]}" - #{pluralize(@total, "result")})
     .commits
       - @commits.each do |commit|
         .commit.panel.panel-default
-          .panel-body= commit["message"]
-          .panel-footer= commit["repository_id"]
+          .panel-body= commit.message
+          .panel-footer= commit.repository.full_name
       .commit.panel.panel-default
         .panel-body
           | Lorem 
