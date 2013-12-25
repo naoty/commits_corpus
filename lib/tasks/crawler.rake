@@ -30,9 +30,12 @@ namespace :crawler do
       while commits = crawler.crawl_commits(repository.full_name, sha)
         break if commits.empty?
         commits.each do |commit|
+          message = commit[:commit][:message]
+          next unless message.include?("\n\n")
+
           attrs = {}
           attrs[:sha] = commit[:sha]
-          attrs[:message] = commit[:commit][:message]
+          attrs[:message] = message
           attrs[:repository_id] = repository.id
           Commit.create(attrs) rescue next
         end
