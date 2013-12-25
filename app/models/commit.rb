@@ -5,10 +5,12 @@ class Commit < ActiveRecord::Base
   after_destroy :delete_index
 
   INDEX = Rails.env.test? ? "test_commits" : "commits"
+  PER_PAGE = 10
 
-  def self.search(keyword)
+  def self.search(keyword, page = 1)
     client = Elasticsearch::Client.new
-    results = client.search(index: INDEX, type: "commit", q: keyword)
+    offset = (page.to_i - 1) * PER_PAGE
+    results = client.search(index: INDEX, type: "commit", q: keyword, from: offset)
     total = results["hits"]["total"]
     commits = results["hits"]["hits"].map { |hit| Commit.new(hit["_source"]) }
     [commits, total]

@@ -9,6 +9,16 @@
         .commit.panel.panel-default
           .panel-body= highlight_message commit.message, params[:keyword]
           .panel-footer= commit.repository.full_name
+    ul.pagination
+      - if page != 1
+        li= link_to "<<", commits_path(keyword: params[:keyword], page: page - 1)
+      - [1, page - 2].max.upto(page - 1) do |n|
+        li= link_to n.to_s, commits_path(keyword: params[:keyword], page: n)
+      li.active= link_to page.to_s, "#"
+      - (page + 1).upto([@last_page, page + 2].min) do |n|
+        li= link_to n.to_s, commits_path(keyword: params[:keyword], page: n)
+      - if page != @last_page
+        li= link_to ">>", commits_path(keyword: params[:keyword], page: page + 1)
   .col-sm-4
     .ad
       img src="http://placehold.it/300x250"
