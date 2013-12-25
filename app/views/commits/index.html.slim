@@ -3,7 +3,7 @@
     .search-box
       = render "form"
     .result-info.alert.alert-info
-      = %("#{params[:keyword]}" - #{pluralize(@total, "result")})
+      = %("#{params[:keyword]}" - #{number_with_delimiter(@total)} #{"result".pluralize(@total)})
     .commits
       - @commits.each do |commit|
         .commit.panel.panel-default
@@ -25,19 +25,7 @@
     .related-words
       h3 Related
       .list-group
-        a.list-group-item href="#"
-          .badge 20
-          | when
-        a.list-group-item href="#"
-          .badge 10
-          | off
-        a.list-group-item href="#"
-          .badge 5
-          | to
-        a.list-group-item href="#"
-          .badge 3
-          | linus
-        a.list-group-item href="#"
-          .badge 1
-          | merge
-
+        - @related_words.each do |word|
+          a.list-group-item href=commits_path(keyword: params[:keyword] + " #{word["term"]}")
+            .badge= number_with_delimiter(word["count"])
+            = word["term"]

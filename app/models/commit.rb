@@ -10,10 +10,23 @@ class Commit < ActiveRecord::Base
   def self.search(keyword, page = 1)
     client = Elasticsearch::Client.new
     offset = (page.to_i - 1) * PER_PAGE
-    results = client.search(index: INDEX, type: "commit", q: keyword, from: offset)
-    total = results["hits"]["total"]
-    commits = results["hits"]["hits"].map { |hit| Commit.new(hit["_source"]) }
-    [commits, total]
+
+    body = {}
+    body[:query] = {}
+    body[:query][:match] = {}
+    body[:query][:match][:message] = keyword
+    body[:facets] = {}
+    body[:facets][:message] = {}
+    body[:facets][:message][:terms] = {}
+    body[:facets][:message][:terms][:field] = "message"
+    body[:facets][:message][:terms][:exclude] = keyword.split(" ").map(&:downcase)
+
+    result  = client.search(index: INDEX, body: body, from: offset)
+    commits = result["hits"]["hits"].map { |hit| Commit.new(hit["_source"]) }
+    total   = result["hits"]["total"]
+    related_terms = result["facets"]["message"]["terms"]
+
+    [commits, related_terms, total]
   end
 
   private
